@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#120D16">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>A Day of Bloom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#120D16;
+    --ink-2:#1D1424;
+    --mist:#EDE4EA;
+    --mist-dim:#9B8CA0;
+    --gold:#E4B04A;
+    --gold-soft:#C9A25E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background: radial-gradient(120% 90% at 50% 108%, #2A2130 0%, var(--ink-2) 42%, var(--ink) 100%);
+    color:var(--mist);
+    font-family:'Jost',sans-serif;
+    font-weight:300;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    min-height:100dvh;
+    padding:calc(24px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom));
+    -webkit-text-size-adjust:100%;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .card{
+    width:min(440px, 100%);
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+  }
+  .eyebrow{
+    font-size:11px;
+    letter-spacing:0.42em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:400;
+  }
+  h1{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:500;
+    font-size:clamp(32px, 8.5vw, 44px);
+    line-height:1.05;
+    color:var(--mist);
+    margin-top:2px;
+  }
+  .day-line{
+    font-size:13px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--mist-dim);
+    margin-top:6px;
+  }
+  .message{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:19px;
+    color:var(--mist);
+    opacity:0.9;
+    min-height:26px;
+    margin-top:2px;
+    transition:opacity .6s ease;
+  }
+  .stage{width:100%;margin:4px 0 2px}
+  svg{display:block;width:100%;height:auto}
+  .bar{
+    width:min(240px, 70%);
+    height:3px;
+    border-radius:3px;
+    background:rgba(201,162,94,0.22);
+    margin-top:10px;
+    overflow:hidden;
+  }
+  .bar > div{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg, var(--gold-soft), var(--gold));
+    border-radius:3px;
+    transition:width 1s ease;
+  }
+  .actions{
+    margin-top:18px;
+    display:flex;
+    gap:22px;
+    align-items:center;
+  }
+  button{
+    font-family:'Jost',sans-serif;
+    font-weight:400;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    background:none;
+    border:none;
+    color:var(--mist-dim);
+    cursor:pointer;
+    padding:6px 2px;
+    border-bottom:1px solid transparent;
+    transition:color .3s, border-color .3s;
+  }
+  button:hover, button:focus-visible{color:var(--gold);border-bottom-color:var(--gold);outline:none}
+  .note{
+    font-size:11px;
+    color:var(--mist-dim);
+    opacity:0.65;
+    margin-top:14px;
+    letter-spacing:0.04em;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="eyebrow">A day of bloom</div>
+  <h1>The Sunflower</h1>
+  <div class="day-line" id="dayLine">&nbsp;</div>
+  <div class="message" id="message">&nbsp;</div>
+
+  <div class="stage">
+    <svg id="scene" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A sunflower with baby's breath that opens over 24 hours">
+      <defs>
+        <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#F2C94C" stop-opacity="0.42"/>
+          <stop offset="60%" stop-color="#E4B04A" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="#E4B04A" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="ray1" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color="#B57F1F"/><stop offset="100%" stop-color="#F2C94C"/>
+        </linearGradient>
+        <linearGradient id="ray2" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color="#8F6217"/><stop offset="100%" stop-color="#D9A83B"/>
+        </linearGradient>
+        <radialGradient id="disc" cx="42%" cy="40%" r="70%">
+          <stop offset="0%" stop-color="#7A4E28"/><stop offset="65%" stop-color="#57351A"/><stop offset="100%" stop-color="#3C2412"/>
+        </radialGradient>
+        <linearGradient id="sepal" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stop-color="#33573C"/><stop offset="100%" stop-color="#568A60"/>
+        </linearGradient>
+        <linearGradient id="stemG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4C7A55"/><stop offset="100%" stop-color="#2C4A33"/>
+        </linearGradient>
+      </defs>
+
+      <circle id="halo" cx="200" cy="215" r="150" fill="url(#glow)" opacity="0"/>
+
+      <!-- baby's breath: thin stems, blossoms pop in as the day passes -->
+      <g id="breathStems" stroke="#5C7A5E" stroke-width="1.6" fill="none" opacity="0.85">
+        <path d="M126 470 C 112 400, 92 340, 74 292"/>
+        <path d="M126 470 C 120 396, 108 330, 104 268"/>
+        <path d="M126 470 C 134 410, 128 352, 140 310"/>
+        <path d="M278 472 C 292 404, 310 346, 328 300"/>
+        <path d="M278 472 C 284 398, 296 336, 296 272"/>
+        <path d="M278 472 C 270 414, 276 360, 264 318"/>
+      </g>
+      <g id="breath"></g>
+
+      <!-- sunflower stem + leaves -->
+      <path d="M200 250 C 196 320, 206 380, 200 490" stroke="url(#stemG)" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <path d="M199 360 C 158 348, 128 354, 112 386 C 142 398, 180 388, 199 366 Z" fill="url(#sepal)" opacity="0.95"/>
+      <path d="M201 410 C 242 400, 272 408, 287 438 C 257 450, 219 439, 201 416 Z" fill="url(#sepal)" opacity="0.95"/>
+
+      <!-- flower head -->
+      <g id="flower" transform="translate(200,215)"></g>
+
+      <g id="drift"></g>
+    </svg>
+  </div>
+
+  <div class="bar"><div id="fill"></div></div>
+
+  <div class="actions">
+    <button id="previewBtn">Preview the day</button>
+    <button id="resetBtn">Replant</button>
+  </div>
+  <div class="note" id="note">She opens a little more with every hour.</div>
+</div>
+
+<script>
+(function(){
+  // =====================================================================
+  //  SET THE START TIME (optional but recommended when sending to someone)
+  //  Put the moment the 24 hours should begin, e.g.
+  //  const START_TIME = "2026-07-03T18:00";
+  //  Leave it as "" and the clock starts the first time it's opened,
+  //  remembered by their browser.
+  // =====================================================================
+  const START_TIME = "";
+
+  const SVGNS = "http://www.w3.org/2000/svg";
+  const flower = document.getElementById('flower');
+  const breath = document.getElementById('breath');
+  const halo = document.getElementById('halo');
+  const dayLine = document.getElementById('dayLine');
+  const messageEl = document.getElementById('message');
+  const fill = document.getElementById('fill');
+  const note = document.getElementById('note');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const lerp = (a,b,t)=>a+(b-a)*t;
+  const clamp01 = t=>Math.max(0,Math.min(1,t));
+  const smooth = t=>{t=clamp01(t);return t*t*(3-2*t)};
+  const layerOpen = (t,t0,t1)=>smooth((t-t0)/(t1-t0));
+
+  const rayPath = "M0 0 C -10 -28, -9 -68, 0 -95 C 9 -68, 10 -28, 0 0 Z";
+  const sepalPath = "M0 0 C -12 -18, -12 -44, 0 -62 C 12 -44, 12 -18, 0 0 Z";
+
+  // ---- build the sunflower head ----
+  const petals = [];
+  function ring(count, offset, fillId, window_, lnRange, wdRange){
+    for(let i=0;i<count;i++){
+      const angle = offset + i*(360/count);
+      const g = document.createElementNS(SVGNS,'g');
+      const p = document.createElementNS(SVGNS,'path');
+      p.setAttribute('d', rayPath);
+      p.setAttribute('fill', fillId);
+      p.setAttribute('stroke','rgba(18,13,22,0.3)');
+      p.setAttribute('stroke-width','0.8');
+      g.appendChild(p);
+      flower.appendChild(g);
+      petals.push({g, angle, window: window_, ln: lnRange, wd: wdRange});
+    }
+  }
+  // green sepals peek out first, then back ring, then front ring
+  for(let i=0;i<10;i++){
+    const g = document.createElementNS(SVGNS,'g');
+    const p = document.createElementNS(SVGNS,'path');
+    p.setAttribute('d', sepalPath);
+    p.setAttribute('fill','url(#sepal)');
+    g.appendChild(p);
+    flower.appendChild(g);
+    petals.push({g, angle:i*36+18, window:[0,0.25], ln:[0.75,0.95], wd:[0.8,1.0], sepal:true});
+  }
+  ring(16, 11.25, 'url(#ray2)', [0.12, 0.95], [0.18, 0.92], [0.4, 0.95]);
+  ring(16, 0,     'url(#ray1)', [0.05, 0.8],  [0.16, 1.0],  [0.4, 1.0]);
+
+  // seed disc on top
+  const disc = document.createElementNS(SVGNS,'circle');
+  disc.setAttribute('fill','url(#disc)');
+  disc.setAttribute('stroke','#2A1A0C');
+  disc.setAttribute('stroke-width','1.5');
+  flower.appendChild(disc);
+  const discRing = document.createElementNS(SVGNS,'circle');
+  discRing.setAttribute('fill','none');
+  discRing.setAttribute('stroke','#8F6217');
+  discRing.setAttribute('stroke-width','1');
+  discRing.setAttribute('stroke-dasharray','2 3');
+  flower.appendChild(discRing);
+
+  // ---- baby's breath blossoms ----
+  const sprigs = [
+    // [x, y, appearAt]
+    [74,292,.30],[86,318,.36],[68,332,.44],[96,300,.52],[82,354,.60],
+    [104,268,.34],[114,290,.42],[96,258,.50],[122,312,.58],[110,338,.66],
+    [140,310,.38],[130,336,.46],[152,330,.54],[136,362,.62],
+    [328,300,.32],[314,326,.40],[338,336,.48],[306,302,.56],[322,360,.64],
+    [296,272,.36],[284,296,.44],[308,262,.52],[276,318,.60],[290,342,.68],
+    [264,318,.42],[276,342,.50],[252,340,.58],[268,368,.66]
+  ];
+  const blossoms = sprigs.map(([x,y,at])=>{
+    const g = document.createElementNS(SVGNS,'g');
+    g.setAttribute('opacity','0');
+    for(let i=0;i<5;i++){
+      const a = i*72*Math.PI/180;
+      const c = document.createElementNS(SVGNS,'circle');
+      c.setAttribute('cx',(Math.cos(a)*2.6).toFixed(2));
+      c.setAttribute('cy',(Math.sin(a)*2.6).toFixed(2));
+      c.setAttribute('r','1.9');
+      c.setAttribute('fill','#F3EFE6');
+      g.appendChild(c);
+    }
+    const mid = document.createElementNS(SVGNS,'circle');
+    mid.setAttribute('r','1.1');
+    mid.setAttribute('fill','#E4B04A');
+    g.appendChild(mid);
+    breath.appendChild(g);
+    return {g,x,y,at};
+  });
+
+  function render(t){
+    petals.forEach(({g, angle, window: w, ln, wd})=>{
+      const o = layerOpen(t, w[0], w[1]);
+      const sy = lerp(ln[0], ln[1], o);
+      const sx = lerp(wd[0], wd[1], o);
+      g.setAttribute('transform', `rotate(${angle}) scale(${sx.toFixed(3)} ${sy.toFixed(3)})`);
+    });
+    const r = lerp(13, 34, smooth(t));
+    disc.setAttribute('r', r.toFixed(1));
+    discRing.setAttribute('r', (r*0.62).toFixed(1));
+    halo.setAttribute('opacity', (t*0.9).toFixed(3));
+    blossoms.forEach(({g,x,y,at})=>{
+      const o = smooth((t-at)/0.1);
+      g.setAttribute('opacity', o.toFixed(3));
+      g.setAttribute('transform', `translate(${x} ${y}) scale(${(0.4+0.6*o).toFixed(3)})`);
+    });
+    fill.style.width = (t*100).toFixed(1)+'%';
+  }
+
+  // ---- bloom animation ----
+  let currentT = 0, animFrame = null;
+  function animateTo(target, ms){
+    if(reduceMotion){ currentT = target; render(target); return Promise.resolve(); }
+    return new Promise(res=>{
+      cancelAnimationFrame(animFrame);
+      const from = currentT, start = performance.now();
+      const step = ts=>{
+        const k = smooth(clamp01((ts-start)/ms));
+        currentT = lerp(from, target, k);
+        render(currentT);
+        if(k<1) animFrame = requestAnimationFrame(step); else res();
+      };
+      animFrame = requestAnimationFrame(step);
+    });
+  }
+
+  // ---- time + storage ----
+  const DAY_MS = 24*60*60*1000;
+  let state = null;
+
+  function loadState(){
+    if(START_TIME){
+      state = {start: new Date(START_TIME).getTime()};
+      return;
+    }
+    try{
+      const raw = localStorage.getItem('sunflower:state');
+      if(raw) state = JSON.parse(raw);
+    }catch(e){ state = null; }
+    if(!state || !state.start){
+      state = {start: Date.now()};
+      saveState();
+    }
+  }
+  function saveState(){
+    if(START_TIME) return;
+    try{ localStorage.setItem('sunflower:state', JSON.stringify(state)); }catch(e){}
+  }
+
+  const bloomT = ()=>clamp01((Date.now() - state.start)/DAY_MS);
+
+  function phrase(t){
+    if(t>=1)   return "Full bloom, following the sun.";
+    if(t>0.85) return "Nearly there. Gold everywhere.";
+    if(t>0.6)  return "The baby's breath wakes around her.";
+    if(t>0.45) return "Halfway to the sun.";
+    if(t>0.22) return "Petals stretch toward morning.";
+    if(t>0.08) return "First gold at the seams.";
+    return "A green bud, still dreaming.";
+  }
+  function setText(t){
+    if(t>=1){
+      dayLine.textContent = "In full bloom";
+    } else {
+      const hour = Math.min(24, Math.max(1, Math.ceil(t*24)));
+      dayLine.textContent = `Hour ${hour} of 24`;
+    }
+    messageEl.textContent = phrase(t);
+  }
+
+  let busy = false;
+  async function init(){
+    loadState();
+    const t = bloomT();
+    setText(t);
+    currentT = Math.max(0, t-0.12);
+    render(currentT);
+    await new Promise(r=>setTimeout(r, 500));
+    await animateTo(t, 2200);
+    // keep creeping while the page stays open
+    setInterval(()=>{
+      if(busy) return;
+      const nt = bloomT();
+      if(nt>currentT){ currentT = nt; render(nt); setText(nt); }
+    }, 30000);
+  }
+
+  document.getElementById('previewBtn').addEventListener('click', async ()=>{
+    if(busy) return; busy = true;
+    const back = bloomT();
+    note.textContent = 'A glimpse of the day ahead…';
+    setText(0); await animateTo(0, 800);
+    // sweep through the 24 hours
+    const start = performance.now(), dur = 7000;
+    await new Promise(res=>{
+      const step = ts=>{
+        const k = smooth(clamp01((ts-start)/dur));
+        currentT = k; render(k); setText(k);
+        if(k<1) requestAnimationFrame(step); else res();
+      };
+      if(reduceMotion){ currentT=1; render(1); setText(1); res(); }
+      else requestAnimationFrame(step);
+    });
+    await new Promise(r=>setTimeout(r, 1200));
+    setText(back);
+    await animateTo(back, 1400);
+    note.textContent = 'She opens a little more with every hour.';
+    busy = false;
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', async ()=>{
+    if(busy) return; busy = true;
+    if(START_TIME){
+      const back = bloomT();
+      setText(0); await animateTo(0, 1000);
+      await new Promise(r=>setTimeout(r, 500));
+      setText(back); await animateTo(back, 2000);
+      busy = false;
+      return;
+    }
+    state = {start: Date.now()};
+    saveState();
+    setText(0);
+    await animateTo(0, 1400);
+    note.textContent = 'Replanted. Hour one begins again.';
+    busy = false;
+  });
+
+  init();
+})();
+</script>
+</body>
+</html>
